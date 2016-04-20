@@ -15,6 +15,11 @@ import org.apache.wicket.model.IModel;
 public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
 
     /**
+     * 
+     */
+    private ReadOnlyModel() {}
+
+    /**
      * Returns a ReadOnlyModel applying the given mapper to
      * the contained object, if it is not NULL.
      * 
@@ -57,6 +62,32 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
                 }
                 else {
                     return mapper.apply(object).getObject();
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns a ReadOnlyModel applying the {@link SerializableFunction} contained
+     * inside the given model to the object contained inside this model.
+     * 
+     * @param <R> the type of the new contained object
+     * @param mapper an {@link IModel} containing a function to be applied
+     * to the contained model object.
+     * @return a new ReadOnlyModel
+     */
+    public <R> ReadOnlyModel<R> apply(IModel<SerializableFunction<T, R>> mapper) {
+        return new ReadOnlyModel<R>() {
+
+            @Override
+            public R getObject() {
+                T object = ReadOnlyModel.this.getObject();
+                SerializableFunction<T, R> f = mapper.getObject();
+                if (object == null || f == null) {
+                    return null;
+                }
+                else {
+                    return f.apply(object);
                 }
             }
         };
