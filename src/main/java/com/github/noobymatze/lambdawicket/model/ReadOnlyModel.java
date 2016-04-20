@@ -20,6 +20,30 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
     private ReadOnlyModel() {}
 
     /**
+     * Returns a ReadOnlyModel checking whether the predicate holds for the
+     * contained object, if it is not null. If the predicate doesn't evaluate
+     * to true, the contained object will be null.
+     * 
+     * @param predicate a predicate to be used for testing the contained object
+     * @return a new ReadOnlyModel
+     */
+    public ReadOnlyModel<T> filter(SerializableFunction<T, Boolean> predicate) {
+        return new ReadOnlyModel<T>() {
+
+            @Override
+            public T getObject() {
+                T object = ReadOnlyModel.this.getObject();
+                if (object != null && predicate.apply(object)) {
+                    return object;
+                }
+                else {
+                    return null;
+                }
+            }
+        };
+    }
+
+    /**
      * Returns a ReadOnlyModel applying the given mapper to
      * the contained object, if it is not NULL.
      * 
