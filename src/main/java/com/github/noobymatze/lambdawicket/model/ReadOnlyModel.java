@@ -15,7 +15,13 @@ import org.apache.wicket.model.IModel;
 public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
 
     /**
-     * 
+     * Constructs a new ReadOnlyModel.
+     * <br>
+     * <br>
+     * <b>
+     * This should never (!) be called outside of this class - 
+     * use the factory methods instead.
+     * </b>
      */
     private ReadOnlyModel() {}
 
@@ -27,7 +33,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * @param predicate a predicate to be used for testing the contained object
      * @return a new ReadOnlyModel
      */
-    public ReadOnlyModel<T> filter(SerializableFunction<T, Boolean> predicate) {
+    public final ReadOnlyModel<T> filter(SerializableFunction<T, Boolean> predicate) {
         return new ReadOnlyModel<T>() {
 
             @Override
@@ -51,7 +57,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * @param mapper a mapper, to be applied to the contained object
      * @return a new ReadOnlyModel
      */
-    public <R> ReadOnlyModel<R> map(SerializableFunction<T, R> mapper) {
+    public final <R> ReadOnlyModel<R> map(SerializableFunction<T, R> mapper) {
         return new ReadOnlyModel<R>() {
 
             @Override
@@ -75,7 +81,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * @param mapper a mapper, to be applied to the contained object
      * @return a new ReadOnlyModel
      */
-    public <R> ReadOnlyModel<R> flatMap(SerializableFunction<T, ReadOnlyModel<R>> mapper) {
+    public final <R> ReadOnlyModel<R> flatMap(SerializableFunction<T, ReadOnlyModel<R>> mapper) {
         return new ReadOnlyModel<R>() {
 
             @Override
@@ -100,7 +106,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * to the contained model object.
      * @return a new ReadOnlyModel
      */
-    public <R> ReadOnlyModel<R> apply(IModel<SerializableFunction<T, R>> mapper) {
+    public final <R> ReadOnlyModel<R> apply(IModel<SerializableFunction<T, R>> mapper) {
         return new ReadOnlyModel<R>() {
 
             @Override
@@ -125,7 +131,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * @param other a default value
      * @return a new ReadOnlyModel
      */
-    public ReadOnlyModel<T> orElse(T other) {
+    public final ReadOnlyModel<T> orElse(T other) {
         return new ReadOnlyModel<T>() {
 
             @Override
@@ -148,7 +154,7 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
      * @param other a supplier to be used as a default
      * @return a new ReadOnlyModel
      */
-    public ReadOnlyModel<T> orElseGet(SerializableSupplier<T> other) {
+    public final ReadOnlyModel<T> orElseGet(SerializableSupplier<T> other) {
         return new ReadOnlyModel<T>() {
 
             @Override
