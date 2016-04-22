@@ -1,5 +1,6 @@
 package com.github.noobymatze.lambdawicket.model;
 
+import java.util.function.BiFunction;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
@@ -68,6 +69,34 @@ public abstract class ReadOnlyModel<T> extends AbstractReadOnlyModel<T> {
                 }
                 else {
                     return mapper.apply(object);
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns a ReadOnlyModel applying the given combining function to 
+     * the contained object of this and the given other model, if they are not null.
+     * 
+     * @param <R> the resulting type
+     * @param <U> the other models type
+     * @param combine a function combining this and the others object to 
+     * a result.
+     * @param other another model to be combined with this one
+     * @return a new ReadOnlyModel
+     */
+    public final <R, U> ReadOnlyModel<R> mapWith(SerializableBiFunction<T, U, R> combine, IModel<U> other) {
+        return new ReadOnlyModel<R>() {
+
+            @Override
+            public R getObject() {
+                T t = ReadOnlyModel.this.getObject();
+                U u = other.getObject();
+                if (t != null && u != null) {
+                    return combine.apply(t, u);
+                }
+                else {
+                    return null;
                 }
             }
         };
