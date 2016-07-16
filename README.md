@@ -1,3 +1,10 @@
+# DEPRECATED
+
+Most of the proposed changes in this repository have been made to the wicket core lib for Wicket 8.x, starting with the discussion here:
+https://mail-archives.apache.org/mod_mbox/wicket-dev/201604.mbox/%3c1063798281.52879.1461269992314.JavaMail.yahoo@mail.yahoo.com%3e
+
+I'll leave it here for reference.
+
 # Type safe AbstractReadOnlyModel building
 
 This small lib provides a type safe and easy way to compose functions for building
